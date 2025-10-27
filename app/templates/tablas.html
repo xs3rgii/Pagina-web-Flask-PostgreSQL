@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tablas disponibles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 50px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+            color: #007bff;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.2s;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .logout {
+            margin-top: 25px;
+            display: inline-block;
+            color: #a33;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Tablas disponibles</h2>
+
+    <div class="card">
+        {% if tables %}
+            <ul>
+            {% for tabla in tables %}
+                <li>
+                    <a href="{{ url_for('main.ver_tabla', tabla=tabla) }}">{{ tabla }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay tablas disponibles.</p>
+        {% endif %}
+    </div>
+
+    <a class="logout" href="{{ url_for('main.logout') }}">Cerrar sesión</a>
+
+</body>
+</html>
