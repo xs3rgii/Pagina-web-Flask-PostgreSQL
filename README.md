@@ -28,14 +28,14 @@ Dentro de la aplicacion
 Login
 
 
-Vista de las tablas
+##Vista de las tablas
 
 
-Tabla 1 
+###Tabla 1
 
 
-Tabla 2 
+###Tabla 2 
 
 
-Tabla 3 
+###Tabla 3 
 
