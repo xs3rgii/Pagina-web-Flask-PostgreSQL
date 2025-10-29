@@ -23,19 +23,19 @@ Y para instalar las dependencias
 
 Para poder utilizarlo con vuestras bases de datos, hay que cambiar las variables definidas en routes.py y ajustarlo segun la ip, base de datos, puerto y de mas cosas
 
-Dentro de la aplicacion
+## Dentro de la aplicacion
 
-Login
-
-
-##Vista de las tablas
+### Login
 
 
-###Tabla 1
+### Vista de las tablas
 
 
-###Tabla 2 
+### Tabla 1
 
 
-###Tabla 3 
+### Tabla 2 
+
+
+### Tabla 3 
 
