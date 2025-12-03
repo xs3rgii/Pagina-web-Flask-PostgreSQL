@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 import psycopg2
-from psycopg2 import pool, sql # sql se mantiene para mostrar el contraste, pero NO se usa en la ruta vulnerable
+from psycopg2 import pool, sql
 from contextlib import contextmanager
 import re
 from functools import wraps
@@ -165,7 +165,7 @@ def login():
         return render_template('login.html')
 
 # -------------------------
-# MOSTRAR TABLAS (Seguro: No acepta entrada del usuario para el SQL)
+# MOSTRAR TABLAS
 # -------------------------
 @main.route('/tablas')
 @login_required
@@ -190,21 +190,16 @@ def mostrar_tablas():
         return redirect(url_for('main.login'))
 
 # -------------------------
-# VER DATOS DE UNA TABLA (VULNERABLE A SQL INJECTION) 🚨
+# VER DATOS DE UNA TABLA
 # -------------------------
 @main.route('/tabla/<tabla>')
 @login_required
 def ver_tabla(tabla):
     
-    # 🛑 ATENCIÓN: Esta función es deliberadamente VULNERABLE.
-    # El valor de la URL 'tabla' se inserta directamente en la consulta SQL.
-    
     try:
         with get_db_connection() as conn:
             with conn.cursor() as cur:
-                
-                # VULNERABLE: Usando f-string para construir la consulta.
-                # Un atacante puede cerrar las comillas e inyectar código.
+
                 cur.execute(f'SELECT * FROM {tabla} LIMIT 100')
                 
                 filas = cur.fetchall()
@@ -216,7 +211,6 @@ def ver_tabla(tabla):
                              filas=filas)
     
     except psycopg2.ProgrammingError as e:
-        # Este error puede ocurrir si la inyección resulta en sintaxis SQL inválida
         flash(f"Error de programación SQL (posible intento de inyección): {e}", "error")
         return redirect(url_for('main.mostrar_tablas'))
     
@@ -236,12 +230,3 @@ def logout():
     session.clear()
     flash("Sesión cerrada correctamente.", "success")
     return redirect(url_for('main.login'))
-
-# -------------------------
-# NOTA DE SEGURIDAD
-# -------------------------
-# Para hacer este código seguro, la línea
-# cur.execute(f'SELECT * FROM "{tabla}" LIMIT 100')
-# debería ser reemplazada por:
-# query = sql.SQL("SELECT * FROM {table} LIMIT 100").format(table=sql.Identifier(tabla))
-# cur.execute(query)
